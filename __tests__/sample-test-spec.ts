@@ -1,4 +1,4 @@
-describe ('WHEN this sample test runs', () => {
+describe('WHEN this sample test runs', () => {
   it('SHOULD return true', () => {
     // Arrange
     const testData: string = 'some data';

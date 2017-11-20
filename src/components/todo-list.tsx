@@ -11,18 +11,18 @@ export default class TodoList extends Component<{}, TodoListState> {
 
   setText = (e: Event) => {
     this.setState({
-      text: (e.target as HTMLInputElement).value
+      text: (e.target as HTMLInputElement).value,
     } as TodoListState);
-  }
+  };
 
   addTodo = () => {
     const { todos, text } = this.state;
 
     this.setState({
       todos: [...todos, { text }],
-      text: ''
+      text: '',
     });
-  }
+  };
 
   render({}, { todos, text }) {
     return (
