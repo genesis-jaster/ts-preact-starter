@@ -1,6 +1,6 @@
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf } from '@storybook/react';
 import { h } from 'preact';
-import TodoItem from '../src/components/todo-item';
+import TodoItem from '../todo-item';
 
 declare var module;
 

@@ -1,3 +1,7 @@
-import { configure } from '@kadira/storybook';
+import { configure } from "@storybook/react";
 
-configure((loadStories) => require('../workbench'), module);
+const req = require.context("../", true, /.stories.tsx$/);
+
+function loadStories() {
+  req.keys().forEach(filename => req(filename));
+}

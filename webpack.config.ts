@@ -1,10 +1,8 @@
-import * as webpack from 'webpack';
-import { resolve } from 'path';
-import * as HtmlWebpackPlugin from 'html-webpack-plugin';
+import * as webpack from "webpack";
+import { resolve } from "path";
+import * as HtmlWebpackPlugin from "html-webpack-plugin";
 
 const { HotModuleReplacementPlugin } = webpack;
-const port = 3000;
-const context = __dirname + '/src';
 
 interface WebpackEnvironment {
   NODE_ENV: string;
@@ -12,39 +10,41 @@ interface WebpackEnvironment {
 
 module.exports = (env: WebpackEnvironment) => {
   const { NODE_ENV = null } = env;
-  const isProd = NODE_ENV === 'production';
+  const port = 3000;
+  const context = resolve(__dirname, "./src");
+  const isProd = NODE_ENV === "production";
+  const outputPath = resolve(__dirname, "./dist");
   const appEntryPoints = isProd
-  ? ['./index']
-  : [
-      `webpack-dev-server/client?http://localhost:${port}`,
-      'webpack/hot/only-dev-server',
-      './index'
-    ];
+    ? ["./index"]
+    : [
+        `webpack-dev-server/client?http://localhost:${port}`,
+        "webpack/hot/only-dev-server",
+        "./index"
+      ];
 
   const config: webpack.Configuration = {
-    name: 'client',
-    target: 'web',
     context,
+    mode: isProd ? "production" : "development",
+    resolve: {
+      extensions: [".tsx", ".ts", ".js"]
+    },
+    devtool: isProd ? "source-map" : "eval-source-map",
     entry: {
       app: appEntryPoints
     },
     output: {
-      filename: '[name].js',
-      path: resolve(__dirname, 'dist')
+      filename: "[name].js",
+      path: outputPath
     },
-    resolve: {
-      extensions: ['.ts', '.tsx', '.js', 'jsx']
-    },
-    devtool: 'source-map',
     module: {
       rules: [
         {
-          enforce: 'pre',
+          enforce: "pre",
           test: /\.tsx?$/,
-          loader: 'tslint-loader',
+          loader: "tslint-loader",
           exclude: /node_modules/,
           options: {
-            configFile: resolve(__dirname, './tslint.json'),
+            configFile: resolve(__dirname, "./tslint.json"),
             emitErrors: true,
             failOnHint: true,
             typeCheck: true
@@ -52,23 +52,23 @@ module.exports = (env: WebpackEnvironment) => {
         },
         {
           test: /\.tsx?$/,
-          loader: 'ts-loader',
+          loader: "ts-loader",
           exclude: /node_modules/
         }
       ]
     },
     plugins: [
       new HtmlWebpackPlugin({
-        template: './index.html',
+        template: "./index.html",
         hash: true,
-        filename: 'index.html',
-        inject: 'body'
+        filename: "index.html",
+        inject: "body"
       }),
       new HotModuleReplacementPlugin()
     ]
   };
 
-  if (NODE_ENV === 'dev') {
+  if (NODE_ENV === "dev") {
     config.devServer = {
       port,
       historyApiFallback: true,
