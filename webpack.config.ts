@@ -24,7 +24,6 @@ module.exports = (env: WebpackEnvironment) => {
 
   const config: webpack.Configuration = {
     context,
-    mode: isProd ? "production" : "development",
     resolve: {
       extensions: [".tsx", ".ts", ".js"]
     },

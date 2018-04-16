@@ -1,5 +1,5 @@
-import { Component, h } from 'preact';
-import TodoItem from './todo-item';
+import { Component, h } from "preact";
+import TodoItem from "./todo-item";
 
 interface TodoListState {
   todos: { text: string }[];
@@ -7,26 +7,32 @@ interface TodoListState {
 }
 
 export default class TodoList extends Component<{}, TodoListState> {
-  state = { todos: [], text: '' };
+  // Shouldn't have to add the type here as it should be infered by
+  // Component<{}, TodoListState>
+  state: TodoListState = { todos: [], text: "" };
 
   setText = (e: Event) => {
     this.setState({
       text: (e.target as HTMLInputElement).value
-    } as TodoListState);
-  }
+    });
+  };
 
-  addTodo = () => {
+  addTodo = (e: Event) => {
+    e.preventDefault();
     const { todos, text } = this.state;
 
     this.setState({
       todos: [...todos, { text }],
-      text: ''
+      text: ""
     });
-  }
+  };
 
-  render({}, { todos, text }) {
+  // Can pass in props, state and context, but for now the typings don't register in the parameters
+  // so going with this.state.
+  render() {
+    const { todos, text } = this.state;
     return (
-      <form onSubmit={this.addTodo} action="javascript:">
+      <form onSubmit={this.addTodo}>
         <input value={text} onInput={this.setText} />
         <button type="submit">Add</button>
         <ul>{todos.map(todo => <TodoItem text={todo.text} />)}</ul>
